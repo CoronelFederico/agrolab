@@ -3,6 +3,70 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 
+
+
+
+function AsistenciaDemo() {
+  const alumnosIniciales = [
+    { id: 1, nombre: "Juan" },
+    { id: 2, nombre: "María" },
+    { id: 3, nombre: "Pedro" },
+    { id: 4, nombre: "Lucía" },
+  ];
+
+  const [asistencia, setAsistencia] = useState(
+    alumnosIniciales.map(a => ({ ...a, estado: "pendiente" }))
+  );
+
+  const marcar = (id, estado) => {
+    const nueva = asistencia.map(a =>
+      a.id === id ? { ...a, estado } : a
+    );
+    setAsistencia(nueva);
+  };
+
+  const presentes = asistencia.filter(a => a.estado === "presente").length;
+
+  return (
+    <div className="bg-gray-800 p-6 rounded-xl space-y-4">
+
+      <p className="text-gray-300">
+        Presentes: {presentes} / {asistencia.length}
+      </p>
+
+      {asistencia.map((alumno) => (
+        <div
+          key={alumno.id}
+          className="flex justify-between items-center bg-gray-900 p-3 rounded"
+        >
+          <span>{alumno.nombre}</span>
+
+          <div className="flex gap-2">
+
+            <button
+              onClick={() => marcar(alumno.id, "presente")}
+              className="bg-green-500 px-3 py-1 rounded"
+            >
+              ✔
+            </button>
+
+            <button
+              onClick={() => marcar(alumno.id, "ausente")}
+              className="bg-red-500 px-3 py-1 rounded"
+            >
+              ✖
+            </button>
+
+          </div>
+        </div>
+      ))}
+
+    </div>
+  );
+}
+
+
+
 export default function Home() {
   const [nombre, setNombre] = useState("");
   const [mensaje, setMensaje] = useState("");
@@ -172,6 +236,21 @@ export default function Home() {
         © {new Date().getFullYear()} AGROLAB
       </div>
 
+
+
+{/* ASISTENCIA DEMO */}
+<section className="px-6 py-10 max-w-2xl mx-auto">
+
+  <h3 className="text-2xl font-bold mb-6 text-center">
+    Control de Asistencia (Demo)
+  </h3>
+
+  <AsistenciaDemo />
+  </section>
     </main>
+
+    
+
+
   );
 }
